@@ -23,7 +23,7 @@ router.post("/table-information/", async (req, res) => {
 
         if (!tableResponse.ok) {
             const errorText = await tableResponse.text();
-
+            console.error(`Airtable request failed with response code: ${tableResponse.status}`)
             if (tableResponse.status === 408) {
                 return res.status(tableResponse.status).json({
                     error: "Airtable request sent back 408",
