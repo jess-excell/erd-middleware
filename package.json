@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@netlify/functions": "^5.2.0",
+    "express": "^5.2.1",
+    "netlify-cli": "^26.0.1",
+    "serverless-http": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6"
+  }
+}
