@@ -4,7 +4,7 @@ import serverless from "serverless-http";
 const api = express();
 const router = Router()
 
-router.get("/hello-world/", (req, res) => res.send("Hello World!"));
+// router.get("/hello-world/", (req, res) => res.send("Hello World!"));
 router.post("/table-information/", async (req, res) => {
     try {
         const { token, baseID } = req.body;
