@@ -23,11 +23,20 @@ router.post("/table-information/", async (req, res) => {
 
         if (!tableResponse.ok) {
             const errorText = await tableResponse.text();
+
+            if (tableResponse.status === 408) {
+                return res.status(tableResponse.status).json({
+                    error: "Airtable request sent back 408",
+                    details: errorText,
+                });
+            }
             return res.status(tableResponse.status).json({
                 error: "Airtable request failed",
                 details: errorText,
             });
         }
+
+
 
         const json = await tableResponse.json();
         const condensedBody = json.tables.map((table: any) => ({
@@ -40,6 +49,7 @@ router.post("/table-information/", async (req, res) => {
                 isPrimary: table.primaryFieldId === field.id,
             })),
         }));
+
         return res.status(200).json(condensedBody);
     } 
     catch (error) {
@@ -47,6 +57,9 @@ router.post("/table-information/", async (req, res) => {
             error: "Internal server error",
         });
     }
+});
+router.post("/send-to-airtable/", async (req, res ) => {
+
 });
 
 api.use("/api/", router);
