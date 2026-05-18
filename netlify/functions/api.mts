@@ -40,12 +40,12 @@ router.post("/table-information/", async (req, res) => {
         const condensedBody = json.tables.map((table: any) => ({
             id: table.id,
             name: table.name,
-            // fields: table.fields.map((field: any) => ({
-            //     name: field.name,
-            //     id: field.id,
-            //     type: field.type,
-            //     isPrimary: table.primaryFieldId === field.id,
-            // })),
+            fields: table.fields.map((field: any) => ({
+              name: field.name,
+              id: field.id,
+              type: field.type,
+              isPrimary: table.primaryFieldId === field.id,
+            })),
         }));
 
         return res.status(200).json(condensedBody);
