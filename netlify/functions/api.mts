@@ -76,11 +76,18 @@ router.post("/find-source-table-data/", async (req, res) => {
         token, destinationTable, potentialSourceTables 
     });
 
-    await fetch(webhookURL, {
+    console.log("Sending data back to Airtable...");
+
+    const airtableResponse = await fetch(webhookURL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(response)
     });
+
+    if (!airtableResponse.ok) {
+        console.error(`Airtable request failed with response code ${airtableResponse.status}`);
+        console.error(`Error message: ${airtableResponse.statusText}`);
+    }
 });
 
 api.use("/api/", router);

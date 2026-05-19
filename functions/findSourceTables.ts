@@ -29,6 +29,8 @@ async function findSourceTableData({token, destinationTable, potentialSourceTabl
         throw new Error("Missing base record");
     }
 
+    console.log("Received base record response.");
+
     const baseRecordArray = (await baseRecordResponse.json()).records;
 
     if (!baseRecordArray || baseRecordArray.length < 1) {
@@ -36,16 +38,21 @@ async function findSourceTableData({token, destinationTable, potentialSourceTabl
         throw new Error("Missing base record");
     }
 
+    console.log("Base record stored");
+
     const baseRecord = baseRecordArray[0];
     let foundRecord = false;
     
     // For each potential source table, see if its records contain the baseRecord
     for (const potentialSource of potentialSourceTables) {
+        console.log("Checking table with ID " + potentialSource.tableId);
+
         let offset: number | undefined;
         let go = true;
         
         // Search all the data in the base for a record with a matching name
         do {
+            console.log("Retrieving data for table...");
             let requestUrl = `https://api.airtable.com/v0/${destinationTable.baseId}/${destinationTable.tableId}`;
             if (offset) {
                 requestUrl += `?offset=${offset}`;
@@ -62,10 +69,12 @@ async function findSourceTableData({token, destinationTable, potentialSourceTabl
 
             // Match records based on name for now
             if (data.records.find((record: any) => record.fields.name === baseRecord.name)) {
+                console.log("Found a match");
                 foundRecord = true;
                 go = false;
                 break;
             }
+            console.log("Didn't find a match.");
 
             if (Object.keys(data).includes("offset")) {
                 offset = data.offset;
@@ -74,6 +83,7 @@ async function findSourceTableData({token, destinationTable, potentialSourceTabl
                 offset = undefined;
             }
         } while (offset && go);
+        console.log("Finished searching records.");
 
         responseData.push({
             ...potentialSource, foundMatchingRecord: foundRecord
