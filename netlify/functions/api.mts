@@ -1,5 +1,6 @@
 import express, { Router } from "express";
 import serverless from "serverless-http";
+import findSourceTableData from "../../functions/findSourceTables";
 
 const api = express();
 const router = Router()
@@ -55,6 +56,27 @@ router.post("/table-information/", async (req, res) => {
             error: "Internal server error",
         });
     }
+});
+router.post("/find-source-table-data/", async (req, res) => {
+    const { token, webhookURL, destinationTable, potentialSourceTables } = req.body;
+
+    if (!token || !destinationTable || !potentialSourceTables || !webhookURL) {
+        return res.status(400).json({
+            error: "Missing required fields",
+        });
+    }
+
+    res.status(202).send('Processing request...');
+    
+    const response = await findSourceTableData({ 
+        token, destinationTable, potentialSourceTables 
+    });
+
+    await fetch(webhookURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(response)
+    });
 });
 
 api.use("/api/", router);
