@@ -66,8 +66,12 @@ router.post("/find-source-table-data/", async (req, res) => {
         });
     }
 
+    console.log("Sending 202");
+
     res.status(202).send('Processing request...');
     
+    console.log("Continuing...");
+
     const response = await findSourceTableData({ 
         token, destinationTable, potentialSourceTables 
     });
