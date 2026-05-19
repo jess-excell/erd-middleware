@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import serverless from "serverless-http";
-import findSourceTableData from "../../functions/findSourceTables";
+import findSourceTableData from "../../functions/findSourceTables.ts";
 
 const api = express();
 const router = Router()
