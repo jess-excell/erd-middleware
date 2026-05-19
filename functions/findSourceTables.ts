@@ -16,6 +16,7 @@ type ResponseType = {
 }[];
 
 async function findSourceTableData({token, destinationTable, potentialSourceTables}: params): Promise<ResponseType> {
+    console.log("Retrieving source table data...");
     const responseData: ResponseType = [];
     const baseRecordResponse = await fetch(
         `https://api.airtable.com/v0/${destinationTable.baseId}/${destinationTable.tableId}?maxRecords=1`, 
