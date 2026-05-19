@@ -18,11 +18,16 @@ type ResponseType = {
 async function findSourceTableData({token, destinationTable, potentialSourceTables}: params): Promise<ResponseType> {
     console.log("Retrieving source table data (this may take several minutes)...");
     const responseData: ResponseType = [];
-    console.log("Array OK")
-    const baseRecordResponse = await fetch(
-        `https://api.airtable.com/v0/${destinationTable.baseId}/${destinationTable.tableId}?maxRecords=1`, 
-        { headers: { "Authorization": `Bearer ${token}`} }
-    );
+    let baseRecordResponse;
+    try {
+        baseRecordResponse = await fetch(
+            `https://api.airtable.com/v0/${destinationTable.baseId}/${destinationTable.tableId}?maxRecords=1`, 
+            { headers: { "Authorization": `Bearer ${token}`} }
+        );
+    } catch (e) {
+        console.error(e)
+        throw e;
+    }
     console.log("Retrieved response");
 
     if (!baseRecordResponse.ok) {
