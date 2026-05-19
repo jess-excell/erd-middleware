@@ -78,6 +78,7 @@ async function findSourceTableData({token, destinationTable, potentialSourceTabl
             ...potentialSource, foundMatchingRecord: foundRecord
         });
     } 
+    console.log("Successfully generated response data.");
     return responseData;
 }
 
