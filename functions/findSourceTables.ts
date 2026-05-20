@@ -7,7 +7,7 @@ type params = {
 type baseAndTable = {
     baseId: string;
     tableId: string;
-    fields: string
+    fields: string[]
 }
 
 type ResponseType = {
@@ -18,7 +18,7 @@ type ResponseType = {
 }[];
 
 async function findSourceTableData({token, destinationTable, potentialSourceTables}: params): Promise<ResponseType> {
-    const destinationFields = JSON.parse(destinationTable.fields);
+    const destinationFields = destinationTable.fields;
     console.log("Retrieving source table data (this may take several minutes)...");
     
     const responseData: ResponseType = [];
@@ -60,7 +60,7 @@ async function findSourceTableData({token, destinationTable, potentialSourceTabl
         let foundRecord = false;
         let offset;
         let go = true;
-        const sourceFields = JSON.parse(potentialSource.fields);
+        const sourceFields = potentialSource.fields;
 
         let exactMatches = 0;
         for (const field of destinationFields) {
