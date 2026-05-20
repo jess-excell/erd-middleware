@@ -19,7 +19,10 @@ export default async (req: Request) => {
     const airtableResponse = await fetch(webhookURL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({data: response})
+        body: JSON.stringify({
+            sources: response, 
+            destination: destinationTable
+        })
     });
 
     if (!airtableResponse.ok) {

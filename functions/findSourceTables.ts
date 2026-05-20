@@ -7,16 +7,20 @@ type params = {
 type baseAndTable = {
     baseId: string;
     tableId: string;
+    fields: string
 }
 
 type ResponseType = {
     baseId: string;
     tableId: string;
-    foundMatchingRecord: boolean
+    foundMatchingRecord: boolean;
+    exactMatches: number;
 }[];
 
 async function findSourceTableData({token, destinationTable, potentialSourceTables}: params): Promise<ResponseType> {
+    const destinationFields = JSON.parse(destinationTable.fields);
     console.log("Retrieving source table data (this may take several minutes)...");
+    
     const responseData: ResponseType = [];
     let baseRecordResponse;
     try {
@@ -56,6 +60,15 @@ async function findSourceTableData({token, destinationTable, potentialSourceTabl
         let foundRecord = false;
         let offset;
         let go = true;
+        const sourceFields = JSON.parse(potentialSource.fields);
+
+        let exactMatches = 0;
+        for (const field of destinationFields) {
+            if (sourceFields.includes(field)) {
+                exactMatches += 1;
+                // Add Levenstien for partial matches?
+            }
+        }
         
         // Search all the data in the base for a record with a matching name
         do {
@@ -93,7 +106,7 @@ async function findSourceTableData({token, destinationTable, potentialSourceTabl
         console.log("Finished searching records.");
 
         responseData.push({
-            ...potentialSource, foundMatchingRecord: foundRecord
+            ...potentialSource, foundMatchingRecord: foundRecord, exactMatches
         });
     } 
     console.log("Successfully generated response data.");
