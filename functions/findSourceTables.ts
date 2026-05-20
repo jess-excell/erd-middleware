@@ -91,7 +91,11 @@ async function findSourceTableData({token, destinationTable, potentialSourceTabl
             const recordMatch = data.records.find((record: any) => {
                 let match = true;
                 for (let key in baseRecord.fields) {
-                    if (key in record.fields && record.fields[key] !== baseRecord.fields[key]) {
+                    if (
+                        key !== "Sync Source"
+                        && key in record.fields 
+                        && record.fields[key] !== baseRecord.fields[key]
+                    ) {
                         match = false;
                     }
                 }
