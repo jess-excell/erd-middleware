@@ -48,19 +48,19 @@ async function findSourceTableData({token, destinationTable, potentialSourceTabl
     console.log("Base record stored");
 
     const baseRecord = baseRecordArray[0];
-    let foundRecord = false;
     
     // For each potential source table, see if its records contain the baseRecord
     for (const potentialSource of potentialSourceTables) {
         console.log("Checking table with ID " + potentialSource.tableId);
-
-        let offset: number | undefined;
+        
+        let foundRecord = false;
+        let offset;
         let go = true;
         
         // Search all the data in the base for a record with a matching name
         do {
             console.log("Retrieving data for table...");
-            let requestUrl = `https://api.airtable.com/v0/${destinationTable.baseId}/${destinationTable.tableId}`;
+            let requestUrl = `https://api.airtable.com/v0/${potentialSource.baseId}/${potentialSource.tableId}`;
             if (offset) {
                 requestUrl += `?offset=${offset}`;
             }
@@ -75,7 +75,7 @@ async function findSourceTableData({token, destinationTable, potentialSourceTabl
             const data = await res.json();
 
             // Match records based on name for now
-            if (data.records.find((record: any) => record.fields.name === baseRecord.name)) {
+            if (data.records.find((record: any) => record.fields.name === baseRecord.fields.name)) {
                 console.log("Found a match");
                 foundRecord = true;
                 go = false;

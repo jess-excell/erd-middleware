@@ -1,6 +1,5 @@
 import express, { Router } from "express";
 import serverless from "serverless-http";
-import findSourceTableData from "../../functions/findSourceTables.ts";
 
 const api = express();
 const router = Router()
@@ -55,38 +54,6 @@ router.post("/table-information/", async (req, res) => {
         return res.status(500).json({
             error: "Internal server error",
         });
-    }
-});
-router.post("/find-source-table-data/", async (req, res) => {
-    const { token, webhookURL, destinationTable, potentialSourceTables } = req.body;
-
-    if (!token || !destinationTable || !potentialSourceTables || !webhookURL) {
-        return res.status(400).json({
-            error: "Missing required fields",
-        });
-    }
-
-    console.log("Sending 202");
-
-    res.status(202).send('Processing request...');
-    
-    console.log("Continuing...");
-
-    const response = await findSourceTableData({ 
-        token, destinationTable, potentialSourceTables 
-    });
-
-    console.log("Sending data back to Airtable...");
-
-    const airtableResponse = await fetch(webhookURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(response)
-    });
-
-    if (!airtableResponse.ok) {
-        console.error(`Airtable request failed with response code ${airtableResponse.status}`);
-        console.error(`Error message: ${airtableResponse.statusText}`);
     }
 });
 
