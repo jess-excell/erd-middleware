@@ -88,7 +88,17 @@ async function findSourceTableData({token, destinationTable, potentialSourceTabl
             const data = await res.json();
 
             // Match records based on name for now
-            if (data.records.find((record: any) => record.fields.name === baseRecord.fields.name)) {
+            const recordMatch = data.records.find((record: any) => {
+                let match = true;
+                for (let key in baseRecord.fields) {
+                    if (key in record.fields && record.fields[key] !== baseRecord.fields[key]) {
+                        match = false;
+                    }
+                }
+                return match;
+            });
+
+            if (recordMatch) {
                 console.log("Found a match");
                 foundRecord = true;
                 go = false;
