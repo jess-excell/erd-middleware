@@ -33,10 +33,11 @@ export default async (req: Request, context: Context) => {
 
     // Set up SVG formatting
     let boxes = "";
+    const padding = 10;
     const cell = 12;
     const gap = 3;
-    const width = 11 * (cell + gap);
-    const height = 7 * (cell + gap);
+    const width = 11 * (cell + gap) + padding * 2;
+    const height = 7 * (cell + gap) + padding * 2;
     
     let weekNumber = 0;
 
@@ -46,8 +47,8 @@ export default async (req: Request, context: Context) => {
  
         const dayIndex = day === 0 ? 6 : day - 1; // Monday = 0, Sunday = 6
 
-        const xIndex = weekNumber * (cell + gap);
-        const yIndex = dayIndex * (cell + gap);
+        const xIndex = weekNumber * (cell + gap) + padding;
+        const yIndex = dayIndex * (cell + gap) + padding;
 
         const colour = colourBlock(entries);
         boxes += `<rect
@@ -67,7 +68,15 @@ export default async (req: Request, context: Context) => {
 
     const svg = `
         <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
-        ${boxes}
+            <rect
+                x="0"
+                y="0"
+                width="${width}"
+                height="${height}"
+                rx="8"
+                fill="white"
+            />
+            ${boxes}
         </svg>
     `;
 
