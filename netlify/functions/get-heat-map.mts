@@ -1,8 +1,6 @@
-type Data = {
-    dates: string[]; // ISO string of dates (all with time 0:00)
-}
+import { Context } from "@netlify/functions";
 
-export default async (req: Request) => {
+export default async (req: Request, context: Context) => {
     const colourBlock = (entries: number) => {
         if (!entries) return "#ebedf0";
         if (entries < 2) return "#9be9a8";
@@ -11,7 +9,8 @@ export default async (req: Request) => {
         return "#216e39";
     }
 
-    const data: Data = await req.json();
+    const data = req.url.split("?dates=")[1];
+    const dates = data.split(",");
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -42,7 +41,7 @@ export default async (req: Request) => {
     let weekNumber = 0;
 
     while (counter <= today) {
-        const entries = data.dates.filter(date => counter.toISOString() === date).length;
+        const entries = dates.filter(date => counter.toISOString() === date).length;
         const day = counter.getDay();
  
         const dayIndex = day === 0 ? 6 : day - 1; // Monday = 0, Sunday = 6
