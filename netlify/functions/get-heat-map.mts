@@ -47,14 +47,13 @@ export default async (req: Request) => {
         const yIndex = dayIndex * (cell + gap) + padding;
 
         const colour = colourBlock(entries);
-        boxes += `<rect
-            x="${xIndex}"
-            y="${yIndex}"
-            width="${cell}"
-            height="${cell}"
-            rx="2"
-            fill="${colour}"
-            ><text>${dayIndex}</text></rect>`;
+        boxes += `
+            <rect x="${xIndex}" y="${yIndex}" width="${cell}" height="${cell}" rx="2" fill="${colour}">
+                <text x="${xIndex}" y="${yIndex}">
+                    ${dayIndex}
+                </text>
+            </rect>
+        `;
 
         if (day === 0) {
             weekNumber++;
