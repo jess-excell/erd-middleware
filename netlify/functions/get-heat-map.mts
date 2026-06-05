@@ -54,13 +54,17 @@ export default async (req: Request) => {
             height="${cell}"
             rx="2"
             fill="${colour}"
-            />`;
+            ><text>${dayIndex}</text></rect>`;
 
         if (day === 0) {
             weekNumber++;
         }
         counter.setDate(counter.getDate() + 1);
     }
+
+    const finalDay = counter.getDay();
+    if (finalDay === 0) weekNumber--;
+
 
     const width = (weekNumber + 1) * (cell + gap) + (padding * 2);
     const height = 7 * (cell + gap) + (padding * 2);
