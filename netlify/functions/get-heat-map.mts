@@ -7,7 +7,7 @@ export default async (req: Request) => {
         return "#216e39";
     }
 
-    const data = req.url.split("?dates=")[1];
+    const data = req.url.split("?dates=")[1].split("&")[0];
     const dates = data.split(",");
 
     const today = new Date();
