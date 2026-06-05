@@ -1,6 +1,4 @@
-import { Context } from "@netlify/functions";
-
-export default async (req: Request, context: Context) => {
+export default async (req: Request) => {
     const colourBlock = (entries: number) => {
         if (!entries) return "#ebedf0";
         if (entries < 2) return "#9be9a8";
@@ -9,8 +7,8 @@ export default async (req: Request, context: Context) => {
         return "#216e39";
     }
 
-    const data = req.url.split("?dates=")[1];
-    const dates = data.split(",");
+    const data = await req.json();
+    const dates: string[] = data.dates.split(",");
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -33,11 +31,9 @@ export default async (req: Request, context: Context) => {
 
     // Set up SVG formatting
     let boxes = "";
-    const padding = 10;
-    const cell = 12;
-    const gap = 3;
-    const width = 11 * (cell + gap) + padding * 2;
-    const height = 7 * (cell + gap) + padding * 2;
+    const padding = 20;
+    const cell = 30;
+    const gap = 6;
     
     let weekNumber = 0;
 
@@ -65,6 +61,9 @@ export default async (req: Request, context: Context) => {
         }
         counter.setDate(counter.getDate() + 1);
     }
+
+    const width = (weekNumber + 1) * (cell + gap) + (padding * 2);
+    const height = 7 * (cell + gap) + (padding * 2);
 
     const svg = `
         <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
