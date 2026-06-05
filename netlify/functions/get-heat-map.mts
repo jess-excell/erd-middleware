@@ -31,9 +31,9 @@ export default async (req: Request) => {
 
     // Set up SVG formatting
     let boxes = "";
-    const padding = 20;
-    const cell = 30;
-    const gap = 6;
+    const padding = 30;
+    const cell = 45;
+    const gap = 9;
     
     let weekNumber = 0;
 
@@ -49,7 +49,6 @@ export default async (req: Request) => {
         const colour = colourBlock(entries);
         boxes += `
             <rect x="${xIndex}" y="${yIndex}" width="${cell}" height="${cell}" rx="2" fill="${colour}"/>
-            <text x="${xIndex}" y="${yIndex}">${dayIndex}</text>
         `;
 
         if (day === 0) {
