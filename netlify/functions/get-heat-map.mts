@@ -48,11 +48,8 @@ export default async (req: Request) => {
 
         const colour = colourBlock(entries);
         boxes += `
-            <rect x="${xIndex}" y="${yIndex}" width="${cell}" height="${cell}" rx="2" fill="${colour}">
-                <text x="${xIndex}" y="${yIndex}">
-                    ${dayIndex}
-                </text>
-            </rect>
+            <rect x="${xIndex}" y="${yIndex}" width="${cell}" height="${cell}" rx="2" fill="${colour}"/>
+            <text x="${xIndex}" y="${yIndex}">${dayIndex}</text>
         `;
 
         if (day === 0) {
