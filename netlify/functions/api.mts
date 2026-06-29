@@ -44,8 +44,11 @@ router.post("/table-information/", async (req, res) => {
               name: field.name,
               id: field.id,
               type: field.type,
-              isPrimary: table.primaryFieldId === field.id,
+              isPrimary: table.primaryFieldId === field.id
             })),
+            relatedFields: table.fields
+                .filter((field: any) => !!field.options.linkedTableId) // Where there is a linkedTableId
+                .map((field: any) => `${field.options.linkedTableId} | ${baseID}`)
         }));
 
         return res.status(200).json(condensedBody);
