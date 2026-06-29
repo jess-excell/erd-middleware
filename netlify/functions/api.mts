@@ -47,7 +47,7 @@ router.post("/table-information/", async (req, res) => {
               isPrimary: table.primaryFieldId === field.id
             })),
             relatedFields: table.fields
-                .filter((field: any) => !!field.options.linkedTableId) // Where there is a linkedTableId
+                .filter((field: any) => !!field.options && !! field.options.linkedTableId) // Where there is a linkedTableId
                 .map((field: any) => `${field.options.linkedTableId} | ${baseID}`)
         }));
 
